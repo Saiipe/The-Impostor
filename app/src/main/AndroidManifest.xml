@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TheImpostor">
+
+        <activity android:name=".ui.JogoActivity" />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

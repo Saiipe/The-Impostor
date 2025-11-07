@@ -1,8 +1,10 @@
 package br.dev.saipe.theimpostor.ui;
 
+import android.content.Intent;
 import android.util.Log;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +22,7 @@ import br.dev.saipe.theimpostor.model.Jogador;
 public class MainActivity extends AppCompatActivity {
 
     private ListView listParticipantes;
+    private Button btnStartGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         listParticipantes = findViewById(R.id.listParticipantes);
 
         JogadorDAO jogadorDAO = new JogadorDAO(this);
-        jogadorDAO.inserirJogador(new Jogador("teste"));
 
         ArrayList<Jogador> jogadores = jogadorDAO.listarJogador();
 
@@ -45,16 +47,20 @@ public class MainActivity extends AppCompatActivity {
             nomes.add(j.getNome());
         }
 
-        for (Jogador j : jogadores) {
-            Log.d("SQLiteTest", "Jogador: " + j.getNome() + " | ID: " + j.getId());
-        }
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
                 nomes
         );
         listParticipantes.setAdapter(adapter);
+
+        btnStartGame = findViewById(R.id.btn_startGame);
+
+        btnStartGame.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, JogoActivity.class);
+            startActivity(intent);
+            finish();
+        });
 
     }
 }
