@@ -19,12 +19,6 @@ public class TemaDAO {
         db = helper.getWritableDatabase();
     }
 
-    public void inserirTema(Tema tema) {
-        ContentValues valores = new ContentValues();
-        valores.put("nome", tema.getNome());
-        db.insert("tema", null, valores);
-    }
-
     public ArrayList<Tema> listarTemas() {
         ArrayList<Tema> lista = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT * FROM tema", null);

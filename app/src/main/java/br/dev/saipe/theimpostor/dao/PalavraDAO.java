@@ -19,14 +19,6 @@ public class PalavraDAO {
         db = helper.getWritableDatabase();
     }
 
-    public void inserirPalavra(Palavra palavra) {
-        ContentValues valores = new ContentValues();
-        valores.put("palavra", palavra.getPalavra());
-        valores.put("dica", palavra.getDica());
-        valores.put("tema_id", palavra.getTemaId());
-        db.insert("palavra", null, valores);
-    }
-
     public ArrayList<Palavra> listarPalavras() {
         ArrayList<Palavra> lista = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT * FROM palavra", null);

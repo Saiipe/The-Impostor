@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">The Impostor</string>
+    <string name="game_name">Jogo - O Impostor"</string>
     <string name="label_participantes">Participantes:</string>
     <string name="label_temas">Temas:</string>
     <string name="text_addPeople">Adicionar Pessoa</string>
-    <string name="text_changeTheme">Escolher Tema</string>
+    <string name="text_addTheme">Adicionar Tema</string>
     <string name="text_startGame">Iniciar Jogo</string>
 
 

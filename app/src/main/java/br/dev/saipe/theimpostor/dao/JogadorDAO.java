@@ -26,7 +26,7 @@ public class JogadorDAO {
 
     public ArrayList<Jogador> listarJogador() {
         ArrayList<Jogador> lista = new ArrayList<>();
-        Cursor c = db.rawQuery("SELECT * FROM jogador", null);
+        Cursor c = db.rawQuery("SELECT id, nome FROM jogador", null);
         if (c.moveToFirst()) {
             do {
                 Jogador j = new Jogador(

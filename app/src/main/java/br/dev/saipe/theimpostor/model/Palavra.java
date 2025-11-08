@@ -4,7 +4,7 @@ public class Palavra {
     private int id;
     private String palavra;
     private String dica;
-    private int temaId; // referência ao Tema no banco
+    private int temaId;
 
     public Palavra() {}
 
