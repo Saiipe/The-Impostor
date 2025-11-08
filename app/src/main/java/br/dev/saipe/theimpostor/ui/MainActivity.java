@@ -7,10 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView listParticipantes;
     private ListView listarTemas;
     private Button btnStartGame;
+    private Button btnAddPerson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,16 +46,16 @@ public class MainActivity extends AppCompatActivity {
         });
 
         listParticipantes = findViewById(R.id.listParticipantes);
-
         JogadorDAO jogadorDAO = new JogadorDAO(this);
 
+// Lista de objetos Jogador
         ArrayList<Jogador> jogadores = jogadorDAO.listarJogador();
         ArrayList<String> nomesJogador = new ArrayList<>();
-
         for (Jogador j : jogadores) {
             nomesJogador.add(j.getNome());
         }
 
+// Adapter
         ArrayAdapter<String> adapterJogador = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_list_item_1,
@@ -60,6 +63,69 @@ public class MainActivity extends AppCompatActivity {
         );
         listParticipantes.setAdapter(adapterJogador);
 
+// Adicionar jogador
+        btnAddPerson = findViewById(R.id.btn_addPeople);
+        btnAddPerson.setOnClickListener(v -> {
+            final EditText input = new EditText(MainActivity.this);
+            input.setHint("DIGITE O NOME DO JOGADOR");
+
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Adicionar Jogador")
+                    .setView(input)
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        String texto = input.getText().toString().trim();
+
+                        if (!texto.isEmpty()) {
+                            // Inserir no DAO
+                            jogadorDAO.inserirJogador(new Jogador(texto));
+
+                            // Adicionar na lista local de objetos
+                            Jogador novoJogador = new Jogador(texto);
+                            jogadores.add(novoJogador);
+
+                            // Adicionar no adapter e atualizar a lista visual
+                            nomesJogador.add(texto);
+                            adapterJogador.notifyDataSetChanged();
+
+                            Toast.makeText(MainActivity.this, "Jogador adicionado: " + texto, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Digite um nome válido!", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
+
+// Remover jogador com duplo clique
+        listParticipantes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            private long lastClickTime = 0;
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                long currentTime = System.currentTimeMillis();
+
+                if (currentTime - lastClickTime < 300) { // duplo clique
+                    Jogador jogador = jogadores.get(position); // pega da lista de objetos
+                    int jogadorId = jogador.getId();
+
+                    // remove do DB
+                    jogadorDAO.removerJogador(jogadorId);
+
+                    // remove da lista local e do adapter
+                    jogadores.remove(position);
+                    nomesJogador.remove(position);
+                    adapterJogador.notifyDataSetChanged();
+
+                    Toast.makeText(MainActivity.this, "Jogador removido: " + jogador.getNome(), Toast.LENGTH_SHORT).show();
+                }
+
+                lastClickTime = currentTime;
+            }
+        });
+
+
+
+        //=================TEMAS=================
         listarTemas = findViewById(R.id.listTemas);
 
         TemaDAO temaDAO = new TemaDAO(this);
@@ -99,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
     });
+
 
         btnStartGame = findViewById(R.id.btn_startGame);
 

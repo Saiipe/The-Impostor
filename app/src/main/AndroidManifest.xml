@@ -12,14 +12,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TheImpostor">
 
-        <activity android:name=".ui.JogoActivity" />
+        <activity android:name=".ui.JogoActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"
+        android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -24,6 +24,15 @@ public class JogadorDAO {
         db.insert("jogador", null, valores);
     }
 
+    public void removerJogador(int id) {
+        db.delete(
+                "jogador",
+                "id = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
+
+
     public ArrayList<Jogador> listarJogador() {
         ArrayList<Jogador> lista = new ArrayList<>();
         Cursor c = db.rawQuery("SELECT id, nome FROM jogador", null);
